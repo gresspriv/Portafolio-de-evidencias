@@ -2,6 +2,8 @@
 
 ## Arquitectura de Computadoras
 
+**Instituto:** Instituto Tecnológico de Motul
+**Docente:** Gabriel Ubaldo González Cauich 
 **Alumno:** Grecia Alexandra Puch Castillo  
 **Materia:** Arquitectura de Computadoras  
 **Fecha:** 23/09/2026  
