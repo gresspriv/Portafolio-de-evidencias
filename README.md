@@ -56,7 +56,7 @@ Entre los temas abordados se encuentran:
 
 ![Evaluación diagnóstica - Hoja 1](Evaluacion.png)
 
-![Evaluación diagnóstica - Hoja 2](Evaluacion.png)
+![Evaluación diagnóstica - Hoja 2](Evaluacion2.png)
 
 ---
 
@@ -181,10 +181,6 @@ Memoria 2 → guardar resultado
 
 Después de ejecutar las instrucciones, la dirección de memoria 2 contiene el resultado de sumar los valores almacenados en las direcciones 0 y 1.
 
-### Evidencia
-
-![Ejercicio 1. Suma de dos números](evidencias/ejercicios-programacion.jpg)
-
 ---
 
 ## Ejercicio 2. Comparación de dos números
@@ -247,7 +243,7 @@ Al finalizar la ejecución del programa, la dirección de memoria 2 contiene el 
 
 ### Evidencia
 
-![Ejercicio 2. Comparación de dos números](evidencias/ejercicios-programacion.jpg)
+![Evidencia ejercicios](preguntas.png)
 
 ---
 
