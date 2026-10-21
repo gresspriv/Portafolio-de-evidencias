@@ -13,12 +13,12 @@
 # ÍNDICE
 
 1. [Introducción](#introducción)
-2. [Actividad 1. Evaluación diagnóstica](#actividad-1-evaluación-diagnóstica)
+2. [Unidad 1. Actividad 1: Evaluación diagnóstica](#unidad-1-actividad-1-evaluación-diagnóstica)
 3. [Actividad 2. Ejercicios de programación](#actividad-2-ejercicios-de-programación)
 4. [Actividad 3. Mapa conceptual](#actividad-3-mapa-conceptual)
 5. [Actividad 4. Reporte de práctica](#actividad-4-reporte-de-práctica)
-6. [Reflexión final](#reflexión-final)
-7. [Conclusión](#conclusión)
+6. [Conclusión](#conclusión)
+7. [Unidad 2. Actividad 1: Ejercicios de direccionamiento de memoria segmentada](#unidad-2-actividad-1-ejercicios-de-direccionamiento-de-memoria-segmentada)
 
 ---
 
@@ -34,7 +34,7 @@ Las actividades incluidas hasta este momento son una evaluación diagnóstica, e
 
 ---
 
-# ACTIVIDAD 1. EVALUACIÓN DIAGNÓSTICA
+# Unidad 1. ACTIVIDAD 1: EVALUACIÓN DIAGNÓSTICA
 
 ## Evidencia
 
@@ -669,7 +669,7 @@ El multiprocesamiento permitió identificar conceptos como el paralelismo, los p
 
 En conclusión, esta actividad permitió reforzar los conocimientos teóricos y organizarlos de manera visual para facilitar su comprensión.
 
-# Actividad 4- Reporte práctica
+# Actividad 4. Reporte de práctica
 
 ## Introducción
 
@@ -889,6 +889,112 @@ En conjunto, el armado permitió observar de manera práctica cómo una memoria 
 La práctica complementó los conocimientos teóricos vistos en clase y permitió desarrollar habilidades para realizar conexiones, identificar posibles errores y comprender de una manera más directa el funcionamiento de una memoria dentro de un circuito digital.
 
 ---
+# Unidad 2. Actividad 1: Ejercicios de direccionamiento de memoria segmentada
+
+## Objetivo de la actividad
+
+Comprender cómo se calculan las direcciones iniciales y finales de los segmentos de memoria mediante operaciones en el sistema hexadecimal, y aplicar la relación entre un registro de segmento y un desplazamiento para obtener una dirección física.
+
+## Descripción de la actividad
+
+Durante esta actividad, realizada en clase, resolví varios ejercicios relacionados con el direccionamiento de memoria segmentada. Partí de valores de segmentos expresados en hexadecimal, los multipliqué por `10H` para determinar la dirección inicial y sumé `FFFFH` para obtener la última dirección de cada segmento. También trabajé con los registros `CS` e `IP` para calcular una dirección física específica.
+
+Los ejercicios me permitieron practicar las operaciones hexadecimales y comprender la manera en que un procesador puede formar una dirección de memoria a partir de dos valores.
+
+## Evidencia de la actividad
+
+![Ejercicios en clase sobre direcciones de memoria segmentada](imagenes/actividad1-ejercicios-clase.png)
+
+*Figura 1. Operaciones realizadas en clase para calcular direcciones iniciales, finales y una dirección física en hexadecimal.*
+
+## Desarrollo de los ejercicios
+
+Para los ejercicios utilicé las siguientes expresiones:
+
+**Dirección inicial del segmento:**
+
+```text
+Dirección inicial = Segmento × 10H
+```
+
+**Dirección final del segmento:**
+
+```text
+Dirección final = Dirección inicial + FFFFH
+```
+
+**Dirección física utilizando segmento y desplazamiento:**
+
+```text
+Dirección física = (Segmento × 10H) + Desplazamiento
+```
+
+Estas expresiones corresponden al direccionamiento segmentado en modo real, donde el desplazamiento puede variar desde `0000H` hasta `FFFFH`.
+
+### Resultados obtenidos
+
+| Valor del segmento | Dirección inicial | Dirección final |
+|:---:|:---:|:---:|
+| `2000H` | `20000H` | `2FFFFH` |
+| `2001H` | `20010H` | `3000FH` |
+| `2100H` | `21000H` | `30FFFH` |
+| `AB00H` | `AB000H` | `BAFFFH` |
+| `1234H` | `12340H` | `2233FH` |
+
+
+```
+
+## ¿Qué aprendizaje obtuve?
+
+Aprendí a calcular direcciones de memoria a partir de números hexadecimales y a reconocer la diferencia entre la dirección inicial de un segmento, su dirección final y una dirección física determinada por un desplazamiento. Antes de desarrollar los ejercicios, la relación entre segmentos y posiciones de memoria me parecía abstracta; al efectuar las operaciones, pude observar que existe una regla matemática que permite ubicar cada dirección. También reforcé el uso de las letras `A`, `B`, `C`, `D`, `E` y `F` como dígitos hexadecimales y comprendí la importancia de respetar el valor de cada posición.
+
+## Aprendizaje conceptual
+
+Comprendí que la memoria segmentada es una forma de organizar y localizar información mediante segmentos y desplazamientos. Un segmento señala una dirección base, mientras que el desplazamiento indica una posición con respecto a esa base. En los ejercicios de direccionamiento en modo real, multiplicar el valor del segmento por `10H` equivale a desplazarlo cuatro bits hacia la izquierda. A partir de esa dirección inicial, sumar `FFFFH` permite encontrar la última dirección que puede representarse con un desplazamiento de 16 bits.
+
+Asimismo, comprendí la función de los registros `CS` (segmento de código) e `IP` (puntero de instrucción), y cómo ambos valores se combinan para señalar una dirección de memoria. Este conocimiento me ayudó a relacionar los conceptos de arquitectura de computadoras, representación numérica y administración de memoria.
+
+## Aprendizaje procedimental
+
+Desarrollé la habilidad de resolver operaciones de multiplicación y suma en hexadecimal, siguiendo un procedimiento ordenado. Primero identifiqué el valor del segmento; después calculé su dirección inicial al multiplicarlo por `10H`; finalmente sumé `FFFFH` para determinar el límite superior de ese segmento. En el ejercicio de `CS:IP`, calculé la base del segmento y le agregué el desplazamiento indicado.
+
+También practiqué la revisión de resultados, alineando correctamente las posiciones de los números y considerando los acarreos cuando una suma superaba el valor `F`. Este procedimiento es útil para interpretar direcciones de memoria y evitar errores de cálculo.
+
+## Aprendizaje actitudinal
+
+Esta actividad me permitió fortalecer mi paciencia, concentración, responsabilidad y disposición para resolver problemas. Reconocí que, en operaciones con diferentes bases numéricas, un pequeño descuido puede modificar por completo el resultado. Por eso fue importante trabajar de manera ordenada, revisar las operaciones y mantener una actitud de aprendizaje ante las dudas que surgieran.
+
+También valoré la importancia de participar en los ejercicios de clase, prestar atención a las explicaciones y aceptar correcciones como una oportunidad para mejorar mis conocimientos.
+
+## Análisis de errores
+
+Al revisar este tipo de ejercicios, identifiqué varios puntos en los que es fácil equivocarse. Uno de ellos es confundir la suma hexadecimal con la decimal, ya que en hexadecimal se realiza un acarreo al llegar a `16`, no a `10`. Otro posible error es colocar de manera incorrecta los dígitos al sumar valores de diferente longitud, como `23000H` y `1A00H`. También es importante no confundir la dirección inicial del segmento con una dirección física que incluye un desplazamiento.
+
+Para prevenir estos errores, revisé que la multiplicación por `10H` estuviera bien representada, alineé las operaciones de derecha a izquierda y comprobé que el resultado final conservara la notación hexadecimal. Esta revisión me ayudó a comprender que no basta con obtener un número: también debo verificar que el procedimiento utilizado sea correcto.
+
+## Propuesta de mejora
+
+Para mejorar mi desempeño en ejercicios posteriores, propongo elaborar una pequeña tabla de equivalencias entre valores decimales y hexadecimales, especialmente para los dígitos de `A` a `F`. También considero útil resolver primero algunos ejemplos sencillos y avanzar gradualmente hacia operaciones que requieran varios acarreos.
+
+Otra mejora sería comprobar los resultados con una calculadora que admita el sistema hexadecimal, después de resolverlos manualmente. De esta manera podría detectar errores y entender dónde me equivoqué sin depender de la herramienta para realizar todo el procedimiento. Finalmente, procuraría escribir cada operación con mayor claridad, identificando el segmento, el desplazamiento y la dirección resultante.
+
+## Integración de teoría y práctica
+
+La teoría estudiada sobre la organización de la memoria se relacionó directamente con los ejercicios realizados. En clase aprendí que un procesador puede utilizar un segmento y un desplazamiento para localizar información; mediante los cálculos comprobé cómo se aplica esa idea matemáticamente. Por ejemplo, a partir de `CS = 2300H` e `IP = 1A00H` obtuve la dirección física `24A00H`.
+
+Esta relación entre conceptos y operaciones me permitió comprender mejor por qué es importante conocer los sistemas de numeración en arquitectura de computadoras. Las operaciones no fueron solamente ejercicios matemáticos, sino una forma de representar cómo se calculan direcciones dentro de un sistema de memoria.
+
+## Reflexión personal
+
+Considero que esta actividad fue importante porque me ayudó a entender un tema que al principio puede resultar complicado por el uso de letras y números en una misma operación. A medida que fui siguiendo los pasos, comprendí que el sistema hexadecimal tiene reglas definidas y que los resultados se pueden obtener de manera lógica y ordenada.
+
+Me di cuenta de que necesito practicar constantemente este tipo de operaciones para resolverlas con mayor rapidez y seguridad. También aprendí a darle importancia al procedimiento y no solamente al resultado, ya que comprender cada paso me permite explicar cómo llegué a una dirección de memoria. Esta práctica fortaleció mi confianza para abordar temas posteriores relacionados con el funcionamiento interno de las computadoras.
+
+## Conclusión de la actividad
+
+En conclusión, los ejercicios de direccionamiento de memoria segmentada me permitieron aplicar el sistema hexadecimal para encontrar direcciones iniciales, finales y direcciones físicas. Comprendí la relación entre el valor de un segmento y su desplazamiento, así como la utilidad de los registros `CS` e `IP` en el cálculo de direcciones.
+
+Además de reforzar los conocimientos teóricos, desarrollé habilidades de cálculo, análisis y verificación de resultados. Esta actividad me dejó como aprendizaje principal que, para comprender el funcionamiento de la memoria de una computadora, es necesario conocer tanto los conceptos de direccionamiento como los procedimientos matemáticos que los sustentan.
 
 
 
