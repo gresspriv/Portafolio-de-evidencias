@@ -19,6 +19,7 @@
 5. [Actividad 4. Reporte de práctica](#actividad-4-reporte-de-práctica)
 6. [Conclusión](#conclusión)
 7. [Unidad 2. Actividad 1: Ejercicios de direccionamiento de memoria segmentada](#unidad-2-actividad-1-ejercicios-de-direccionamiento-de-memoria-segmentada)
+8. [Actividad 2: Preguntas y problemas sobre registros y direccionamiento de memoria](#actividad-2-preguntas-y-problemas-sobre-registros-y-direccionamiento-de-memoria)
 
 ---
 
@@ -942,8 +943,6 @@ Estas expresiones corresponden al direccionamiento segmentado en modo real, dond
 | `1234H` | `12340H` | `2233FH` |
 
 
-```
-
 ## ¿Qué aprendizaje obtuve?
 
 Aprendí a calcular direcciones de memoria a partir de números hexadecimales y a reconocer la diferencia entre la dirección inicial de un segmento, su dirección final y una dirección física determinada por un desplazamiento. Antes de desarrollar los ejercicios, la relación entre segmentos y posiciones de memoria me parecía abstracta; al efectuar las operaciones, pude observar que existe una regla matemática que permite ubicar cada dirección. También reforcé el uso de las letras `A`, `B`, `C`, `D`, `E` y `F` como dígitos hexadecimales y comprendí la importancia de respetar el valor de cada posición.
@@ -996,6 +995,189 @@ En conclusión, los ejercicios de direccionamiento de memoria segmentada me perm
 
 Además de reforzar los conocimientos teóricos, desarrollé habilidades de cálculo, análisis y verificación de resultados. Esta actividad me dejó como aprendizaje principal que, para comprender el funcionamiento de la memoria de una computadora, es necesario conocer tanto los conceptos de direccionamiento como los procedimientos matemáticos que los sustentan.
 
+# Actividad 2: Preguntas y problemas sobre registros y direccionamiento de memoria
+
+## Objetivo de la actividad
+
+Reforzar mis conocimientos sobre los registros internos de los microprocesadores, sus funciones, las banderas de estado y el direccionamiento de memoria en modo real, mediante la resolución de preguntas teóricas y problemas prácticos con números hexadecimales.
+
+## Descripción de la actividad
+
+En esta actividad, titulada **«Preguntas y problemas»**, respondí un cuestionario de 21 apartados sobre arquitectura de microprocesadores. Los primeros ejercicios estuvieron relacionados con los registros visibles para el programa, los registros de 8, 16 y 32 bits, el contador de instrucciones, las banderas y los registros de segmento. Posteriormente resolví problemas para encontrar direcciones iniciales y finales de segmentos, así como direcciones físicas de memoria utilizando diferentes combinaciones de registros.
+
+La actividad me permitió ampliar lo visto en los ejercicios de clase: no solamente apliqué operaciones hexadecimales, sino que también analicé para qué sirven los registros y cómo se relacionan con el acceso a instrucciones, datos y memoria de pila.
+
+## Evidencias de la actividad
+
+![Preguntas sobre registros, banderas y microprocesadores](actv2.jpeg)
+
+*Figura 1. Preguntas 1 a 8 sobre los registros, el puntero de instrucciones y las banderas.*
+
+![Preguntas sobre segmentos y cálculo de direcciones iniciales y finales](actv21.jpeg)
+
+*Figura 2. Preguntas 9 a 13 y comienzo de los cálculos de los límites de segmentos.*
+
+![Problemas de direccionamiento con CS e IP](actv22.jpeg)
+
+*Figura 3. Continuación de los segmentos y ejercicio 14 de direcciones físicas con CS:IP.*
+
+![Cuestionario sobre acceso a memoria y registros de desplazamiento](actv23.jpeg)
+
+*Figura 4. Preguntas 15 a 20 y ejemplos de direccionamiento de datos.*
+
+![Problemas con registros de datos, pila y desplazamientos extendidos](actv24.jpeg)
+
+*Figura 5. Ejercicios de localización de memoria con DS, SS, BP, SP y registros extendidos.*
+
+![Últimos cálculos de direcciones físicas](actv25.jpeg)
+
+*Figura 6. Continuación de los ejercicios con registros de 32 bits.*
+
+## Desarrollo de la actividad
+
+
+### Parte 2. Direcciones iniciales y finales de segmentos
+
+En el ejercicio 13 calculé los límites de varios segmentos. Apliqué las siguientes fórmulas:
+
+```text
+Dirección inicial = Segmento × 10H
+Dirección final   = Dirección inicial + FFFFH
+```
+
+| Segmento | Dirección inicial | Dirección final |
+|:---:|:---:|:---:|
+| `1000H` | `10000H` | `1FFFFH` |
+| `1234H` | `12340H` | `2233FH` |
+| `2300H` | `23000H` | `32FFFH` |
+| `E000H` | `E0000H` | `EFFFFH` |
+| `AB00H` | `AB000H` | `BAFFFH` |
+
+Comprendí que la dirección final se obtiene al considerar el mayor desplazamiento de 16 bits, `FFFFH`, tomando como referencia la base del segmento.
+
+### Parte 3. Cálculo de direcciones físicas con CS e IP
+
+En el ejercicio 14 utilicé el registro de segmento de código (`CS`) y el puntero de instrucción (`IP`) para localizar la dirección física correspondiente:
+
+```text
+Dirección física = (CS × 10H) + IP
+```
+
+| CS | IP | Dirección física |
+|:---:|:---:|:---:|
+| `1000H` | `2000H` | `12000H` |
+| `2000H` | `1000H` | `21000H` |
+| `2300H` | `1A00H` | `24A00H` |
+| `1A00H` | `B000H` | `25000H` |
+| `3456H` | `ABCDH` | `3F12DH` |
+
+Por ejemplo:
+
+```text
+CS = 3456H
+IP = ABCDH
+
+3456H × 10H = 34560H
+34560H + ABCDH = 3F12DH
+
+Dirección física = 3F12DH
+```
+
+Con este ejercicio observé cómo la suma del desplazamiento a la dirección base permite localizar una instrucción dentro de la memoria.
+
+### Parte 4. Direccionamiento con registros de datos y de pila
+
+En el ejercicio 20 trabajé con las combinaciones `DS:DI`, `DS:SI`, `SS:BP`, `DS:BX` y `SS:SP`. Para cada una, identifiqué el segmento que proporciona la base y el registro que contiene el desplazamiento.
+
+| Combinación | Valores empleados | Dirección física |
+|---|---|:---:|
+| `DS:DI` | `1000H:2000H` | `12000H` |
+| `DS:SI` | `2000H:7002H` | `27002H` |
+| `SS:BP` | `2300H:3200H` | `26200H` |
+| `DS:BX` | `A000H:1000H` | `A1000H` |
+| `SS:SP` | `2900H:3A00H` | `2CA00H` |
+
+Estos cálculos reforzaron mi comprensión de que `DS` se asocia con el segmento de datos y `SS` con el segmento de pila, mientras que registros como `SI`, `DI`, `BX`, `BP` y `SP` pueden representar desplazamientos según el modo de direccionamiento empleado.
+
+### Parte 5. Direccionamiento con registros extendidos
+
+En el ejercicio 21 resolví problemas semejantes con registros de 32 bits, como `EAX`, `ECX`, `ESI`, `ESP` y `EDX`.
+
+| Combinación | Valores empleados | Dirección calculada |
+|---|---|:---:|
+| `DS:EAX` | `2000H:00003000H` | `23000H` |
+| `DS:ECX` | `1A00H:00002000H` | `1C000H` |
+| `DS:ESI` | `C000H:0000A000H` | `CA000H` |
+| `SS:ESP` | `0800H:00009000H` | `11000H` |
+| `DS:EDX` | `1239H:0000A900H` | `1CC90H` |
+
+Por ejemplo:
+
+```text
+DS = 1239H
+EDX = 0000A900H
+
+1239H × 10H = 12390H
+12390H + A900H = 1CC90H
+
+Dirección calculada = 1CC90H
+```
+
+En estos ejemplos los desplazamientos representados en registros extendidos permanecen dentro de `FFFFH`; por eso fue posible aplicar la misma relación aritmética utilizada en los problemas anteriores.
+
+## ¿Qué aprendizaje obtuve?
+
+Aprendí que los registros del microprocesador tienen funciones diferentes y que su contenido influye directamente en el procesamiento de instrucciones y el acceso a la memoria. Esta actividad me permitió comprender por qué existen registros de propósito general, índices, punteros, segmentos y banderas. También reforcé mis conocimientos sobre el sistema hexadecimal mediante ejercicios más variados que los de la actividad anterior.
+
+Mi principal aprendizaje fue reconocer que, para calcular correctamente una dirección física, primero debo identificar qué registro aporta la base del segmento y cuál aporta el desplazamiento. Además, descubrí que los nombres y tamaños de los registros permiten identificar características de distintas generaciones de microprocesadores, como el 80286, el 80386 y modelos posteriores.
+
+## Aprendizaje conceptual
+
+Comprendí el significado de los registros visibles para el programa y la diferencia entre registros de 8, 16 y 32 bits. Aprendí que el prefijo `E`, presente en nombres como `EAX`, `EBX` y `ECX`, identifica versiones extendidas de 32 bits de registros clásicos de 16 bits. También relacioné los registros `CX` y `ECX` con operaciones de conteo y los registros `IP` y `EIP` con el seguimiento de la ejecución de instrucciones.
+
+Otro conocimiento importante fue la función de las banderas, como `CF` (acarreo), `OF` (desbordamiento con signo), `PF` (paridad) e `IF` (habilitación de interrupciones enmascarables). Finalmente, comprendí que en el direccionamiento segmentado en modo real se utiliza una base de segmento y un desplazamiento, y que las combinaciones de registros pueden cambiar según se acceda al código, a los datos o a la pila.
+
+## Aprendizaje procedimental
+
+Aprendí a organizar una solución a partir de los datos proporcionados en cada problema. Primero identifiqué los registros involucrados; después diferencié el segmento del desplazamiento; posteriormente multipliqué el valor del segmento por `10H` y sumé el desplazamiento en hexadecimal para obtener la dirección correspondiente.
+
+También ejercité la interpretación de los enunciados teóricos y la comparación de conceptos semejantes, por ejemplo, entre `IP` y `EIP` o entre `SP` y `ESP`. En los ejercicios aritméticos practiqué las sumas con dígitos de `A` a `F`, el manejo de acarreos y la revisión de resultados. Estas habilidades me permiten resolver problemas de direccionamiento con mayor orden y explicar el procedimiento que utilicé.
+
+## Aprendizaje actitudinal
+
+Esta actividad fortaleció mi perseverancia, disciplina y atención a los detalles. Al tratarse de un cuestionario extenso que combinaba preguntas teóricas y problemas numéricos, fue necesario mantener la concentración, administrar el tiempo y evitar responder apresuradamente.
+
+También valoré la importancia de investigar o consultar mis apuntes cuando no recuerdo una definición, así como la disposición para corregir o aclarar una respuesta. Comprendí que la precisión es indispensable al estudiar arquitectura de computadoras, porque cambiar un dígito hexadecimal o confundir un registro puede alterar la interpretación de una dirección.
+
+## Análisis de errores
+
+Al revisar mis procedimientos, pude identificar los tipos de errores que debía prevenir. En las preguntas conceptuales, uno de los principales riesgos era confundir los registros de 16 bits con sus versiones extendidas de 32 bits o asignar a una bandera una función que corresponde a otra. Por ejemplo, la bandera de acarreo (`CF`) no es lo mismo que la de desbordamiento con signo (`OF`), y las instrucciones `INC` y `DEC` no modifican `CF`.
+
+En los problemas de cálculo, el error más probable era sumar como si los valores fueran decimales, olvidar un acarreo hexadecimal o multiplicar incorrectamente el segmento por `10H`. Otro punto delicado fue distinguir entre `DS`, `SS` y `CS`, porque cada uno se relaciona con un contexto diferente de memoria. Los resultados aritméticos principales mostrados en mis evidencias son consistentes con la fórmula utilizada; por ello, mi análisis se enfoca en las dificultades y confusiones que estos ejercicios permiten detectar, sin atribuirme equivocaciones que no aparecen documentadas.
+
+## Propuesta de mejora
+
+Como propuesta de mejora, considero conveniente elaborar una tabla comparativa con el nombre, tamaño y función de cada registro. Esto facilitaría el estudio de las diferencias entre los registros tradicionales y los extendidos. También podría realizar un mapa conceptual que agrupe los registros de propósito general, los de segmento, los punteros y las banderas.
+
+Para mejorar los cálculos, utilizaría un formato fijo con cuatro pasos: identificar los datos, calcular la base, sumar el desplazamiento y comprobar el resultado. Una vez hecho el procedimiento manual, verificaría las operaciones con una calculadora hexadecimal o una herramienta de simulación. Además, revisaría los nombres de los registros antes de comenzar para asegurarme de utilizar el segmento correcto.
+
+## Integración de teoría y práctica
+
+La parte teórica me permitió conocer las funciones de los registros, mientras que los problemas me ayudaron a observar cómo se aplican esos conocimientos al direccionamiento de memoria. Por ejemplo, aprendí que `CS` se relaciona con el código y `IP` con la posición de una instrucción; después utilicé ambos registros para calcular direcciones físicas concretas.
+
+De igual manera, relacioné los registros `DS` y `SS` con las direcciones de datos y de pila al resolver problemas con `SI`, `DI`, `BX`, `BP` y `SP`. La actividad mostró que los conceptos de arquitectura no son definiciones aisladas: tienen una aplicación en los cálculos que permiten localizar instrucciones y datos dentro de la memoria.
+
+## Reflexión personal
+
+Esta segunda actividad me pareció más completa que la primera porque no se limitó a realizar operaciones, sino que también me hizo pensar en el significado de los registros que estaba utilizando. Al responder las preguntas, pude reconocer cuáles conceptos recordaba con facilidad y cuáles necesitaba estudiar con más detenimiento. Los ejercicios prácticos me ayudaron a consolidar la explicación teórica, especialmente en el uso de segmentos y desplazamientos.
+
+Me di cuenta de que memorizar el nombre de un registro no es suficiente; también debo entender su función y saber en qué situaciones se utiliza. Considero que el cuestionario fue útil para medir mi avance en la unidad y para prepararme para temas posteriores. Me gustaría continuar practicando con ejemplos distintos y, cuando sea posible, observar estas operaciones mediante un simulador para comprender mejor lo que ocurre dentro del microprocesador.
+
+## Conclusión de la actividad
+
+En conclusión, la actividad **«Preguntas y problemas»** me permitió fortalecer mis conocimientos acerca de los registros del microprocesador, sus tamaños y funciones, las banderas de estado y el cálculo de direcciones de memoria. Mediante el cuestionario y los ejercicios comprendí mejor cómo se relacionan la arquitectura interna del procesador y el direccionamiento segmentado.
+
+Además, reforcé mi capacidad para analizar preguntas, aplicar fórmulas, realizar operaciones hexadecimales y comprobar resultados. Considero que esta actividad fue fundamental para integrar los aspectos teóricos y prácticos de la Unidad 2, y me dejó una base más sólida para continuar estudiando el funcionamiento de los microprocesadores y la organización de la memoria.
 
 
 
