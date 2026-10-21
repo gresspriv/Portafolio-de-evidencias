@@ -745,11 +745,15 @@ De esta manera se pudo observar de forma práctica la diferencia entre **almacen
 
 ## Evidencia 1
 
-![Prueba del circuito](prac1.jpeg)
+![Prueba del circuito](circuito.jpeg)
 
 ## Evidencia 2
 
-![Prueba del circuito 2](evidencia-circuito-2.png)
+![Rubrica](reporte.jpeg)
+
+## Evidencia 3
+
+![Rubrica](reporte2.jpeg)
 
 
 ---
