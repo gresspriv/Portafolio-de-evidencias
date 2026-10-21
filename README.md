@@ -20,6 +20,7 @@
 6. [Conclusión](#conclusión)
 7. [Unidad 2. Actividad 1: Ejercicios de direccionamiento de memoria segmentada](#unidad-2-actividad-1-ejercicios-de-direccionamiento-de-memoria-segmentada)
 8. [Actividad 2: Preguntas y problemas sobre registros y direccionamiento de memoria](#actividad-2-preguntas-y-problemas-sobre-registros-y-direccionamiento-de-memoria)
+9. [Actividad 3: Modos de direccionamiento de memoria en lenguaje ensamblador](#actividad-3-modos-de-direccionamiento-de-memoria-en-lenguaje-ensamblador)
 
 ---
 
@@ -740,7 +741,7 @@ De esta manera se pudo observar de forma práctica la diferencia entre **almacen
 
 ## Evidencia 1
 
-![Prueba del circuito](evidencia-circuito.png)
+![Prueba del circuito](prac1.jpeg)
 
 ## Evidencia 2
 
@@ -1031,99 +1032,7 @@ La actividad me permitió ampliar lo visto en los ejercicios de clase: no solame
 
 ![Últimos cálculos de direcciones físicas](actv25.jpeg)
 
-*Figura 6. Continuación de los ejercicios con registros de 32 bits.*
 
-## Desarrollo de la actividad
-
-
-### Parte 2. Direcciones iniciales y finales de segmentos
-
-En el ejercicio 13 calculé los límites de varios segmentos. Apliqué las siguientes fórmulas:
-
-```text
-Dirección inicial = Segmento × 10H
-Dirección final   = Dirección inicial + FFFFH
-```
-
-| Segmento | Dirección inicial | Dirección final |
-|:---:|:---:|:---:|
-| `1000H` | `10000H` | `1FFFFH` |
-| `1234H` | `12340H` | `2233FH` |
-| `2300H` | `23000H` | `32FFFH` |
-| `E000H` | `E0000H` | `EFFFFH` |
-| `AB00H` | `AB000H` | `BAFFFH` |
-
-Comprendí que la dirección final se obtiene al considerar el mayor desplazamiento de 16 bits, `FFFFH`, tomando como referencia la base del segmento.
-
-### Parte 3. Cálculo de direcciones físicas con CS e IP
-
-En el ejercicio 14 utilicé el registro de segmento de código (`CS`) y el puntero de instrucción (`IP`) para localizar la dirección física correspondiente:
-
-```text
-Dirección física = (CS × 10H) + IP
-```
-
-| CS | IP | Dirección física |
-|:---:|:---:|:---:|
-| `1000H` | `2000H` | `12000H` |
-| `2000H` | `1000H` | `21000H` |
-| `2300H` | `1A00H` | `24A00H` |
-| `1A00H` | `B000H` | `25000H` |
-| `3456H` | `ABCDH` | `3F12DH` |
-
-Por ejemplo:
-
-```text
-CS = 3456H
-IP = ABCDH
-
-3456H × 10H = 34560H
-34560H + ABCDH = 3F12DH
-
-Dirección física = 3F12DH
-```
-
-Con este ejercicio observé cómo la suma del desplazamiento a la dirección base permite localizar una instrucción dentro de la memoria.
-
-### Parte 4. Direccionamiento con registros de datos y de pila
-
-En el ejercicio 20 trabajé con las combinaciones `DS:DI`, `DS:SI`, `SS:BP`, `DS:BX` y `SS:SP`. Para cada una, identifiqué el segmento que proporciona la base y el registro que contiene el desplazamiento.
-
-| Combinación | Valores empleados | Dirección física |
-|---|---|:---:|
-| `DS:DI` | `1000H:2000H` | `12000H` |
-| `DS:SI` | `2000H:7002H` | `27002H` |
-| `SS:BP` | `2300H:3200H` | `26200H` |
-| `DS:BX` | `A000H:1000H` | `A1000H` |
-| `SS:SP` | `2900H:3A00H` | `2CA00H` |
-
-Estos cálculos reforzaron mi comprensión de que `DS` se asocia con el segmento de datos y `SS` con el segmento de pila, mientras que registros como `SI`, `DI`, `BX`, `BP` y `SP` pueden representar desplazamientos según el modo de direccionamiento empleado.
-
-### Parte 5. Direccionamiento con registros extendidos
-
-En el ejercicio 21 resolví problemas semejantes con registros de 32 bits, como `EAX`, `ECX`, `ESI`, `ESP` y `EDX`.
-
-| Combinación | Valores empleados | Dirección calculada |
-|---|---|:---:|
-| `DS:EAX` | `2000H:00003000H` | `23000H` |
-| `DS:ECX` | `1A00H:00002000H` | `1C000H` |
-| `DS:ESI` | `C000H:0000A000H` | `CA000H` |
-| `SS:ESP` | `0800H:00009000H` | `11000H` |
-| `DS:EDX` | `1239H:0000A900H` | `1CC90H` |
-
-Por ejemplo:
-
-```text
-DS = 1239H
-EDX = 0000A900H
-
-1239H × 10H = 12390H
-12390H + A900H = 1CC90H
-
-Dirección calculada = 1CC90H
-```
-
-En estos ejemplos los desplazamientos representados en registros extendidos permanecen dentro de `FFFFH`; por eso fue posible aplicar la misma relación aritmética utilizada en los problemas anteriores.
 
 ## ¿Qué aprendizaje obtuve?
 
@@ -1179,5 +1088,306 @@ En conclusión, la actividad **«Preguntas y problemas»** me permitió fortalec
 
 Además, reforcé mi capacidad para analizar preguntas, aplicar fórmulas, realizar operaciones hexadecimales y comprobar resultados. Considero que esta actividad fue fundamental para integrar los aspectos teóricos y prácticos de la Unidad 2, y me dejó una base más sólida para continuar estudiando el funcionamiento de los microprocesadores y la organización de la memoria.
 
+# Actividad 3: Modos de direccionamiento de memoria en lenguaje ensamblador
+
+## Objetivo de la actividad
+
+Identificar y comprender diferentes modos de direccionamiento empleados en el lenguaje ensamblador, reconociendo cómo se combinan los registros, los desplazamientos y las referencias a variables para calcular una dirección efectiva y localizar un dato en la memoria.
+
+## Descripción de la actividad
+
+En esta actividad desarrollé ejercicios sobre **cinco modos de direccionamiento de memoria**: indirecto por registro, base más índice, relativo a registro, base relativa más índice e índice escalado. Para cada caso analicé una instrucción `MOV`, identifiqué los registros y valores involucrados y realicé operaciones en hexadecimal con el propósito de obtener la dirección de memoria accedida.
+
+También distinguí entre el **origen** y el **destino** de una transferencia de datos. Esta parte fue importante porque las instrucciones no siempre leen de la memoria: algunas escriben en ella y otras toman el contenido de una posición para colocarlo en un registro. Los ejercicios me ayudaron a comprender cómo cambia el cálculo de una dirección de acuerdo con la expresión que aparece entre corchetes.
+
+## Evidencia de la actividad
+
+![Ejercicios de cinco modos de direccionamiento en ensamblador](actv3.jpeg)
+
+*Figura 1. Ejercicios realizados en clase sobre direccionamiento indirecto, base más índice, relativo, base relativa más índice e índice escalado.*
+
+## Desarrollo de la actividad
+
+### Concepto general
+
+Un **modo de direccionamiento** es la forma en que una instrucción indica dónde se encuentra su operando. Cuando el operando está en memoria, los registros y desplazamientos de la instrucción sirven para calcular la dirección efectiva. En los ejemplos de direccionamiento segmentado, la dirección física se obtiene agregando esa dirección efectiva a la base del segmento correspondiente.
+
+```text
+Dirección física = (Segmento × 10H) + Dirección efectiva
+```
+
+La notación `H` señala que los valores están escritos en hexadecimal y los corchetes `[ ]` indican una referencia a una posición de memoria.
+
+## ¿Qué aprendizaje obtuve?
+
+Aprendí que el microprocesador dispone de distintas maneras de localizar datos en la memoria y que cada modo de direccionamiento se adapta a una necesidad particular. Antes de resolver esta actividad conocía el procedimiento de sumar una base de segmento y un desplazamiento; ahora comprendí que **ese desplazamiento también puede calcularse a partir de uno o varios registros, una constante o un índice multiplicado por un factor de escala**.
+
+Otro aprendizaje importante fue identificar el sentido de una instrucción `MOV`: reconocer el origen y el destino me ayudó a entender si el dato se transfiere desde un registro hacia la memoria o desde la memoria hacia un registro. También comprendí por qué se utilizan los corchetes en ensamblador y cómo estos representan el acceso al contenido de una dirección de memoria.
+
+## Aprendizaje conceptual
+
+Comprendí que los modos de direccionamiento son reglas para determinar la ubicación de los operandos que utiliza una instrucción. Aprendí a diferenciar el direccionamiento indirecto por registro, donde una posición se señala mediante un solo registro, del direccionamiento base más índice, que combina dos registros para obtener una dirección efectiva.
+
+También aprendí que un direccionamiento relativo agrega un valor constante; que un direccionamiento con base relativa puede integrar la posición de una variable o arreglo; y que el índice escalado permite multiplicar un índice por un factor, lo cual resulta especialmente útil para manejar elementos de diferente tamaño. Además, reforcé el significado de registros como `BX`, `SI`, `BP`, `CL`, `DX`, `AX`, `EBX` y `ESI`, y su participación en las transferencias de datos.
+
+## Aprendizaje procedimental
+
+Desarrollé la habilidad de interpretar instrucciones `MOV` y convertir sus expresiones de direccionamiento en operaciones aritméticas. Para resolver los ejercicios seguí un procedimiento: identifiqué la instrucción y el registro de segmento, reconocí el origen y el destino, calculé la base del segmento, sumé los registros o constantes indicados y obtuve la dirección física resultante.
+
+Practiqué especialmente las sumas hexadecimales y el manejo de varios términos en una sola operación. En el ejercicio de índice escalado, primero multipliqué el valor de `ESI` por dos y después sumé el resultado al valor de `EBX`. Esta secuencia de pasos me ayudó a resolver expresiones más complejas sin perder de vista el significado de cada número.
+
+## Aprendizaje actitudinal
+
+Esta actividad fortaleció mi atención, paciencia y capacidad de análisis, porque los ejercicios eran similares en apariencia, pero requerían procedimientos ligeramente distintos. Aprendí a leer con cuidado cada instrucción antes de comenzar los cálculos y a evitar suponer que todos los modos de direccionamiento utilizan los mismos elementos.
+
+También reforcé mi responsabilidad al organizar las operaciones, identificar los resultados y revisar que el valor final correspondiera con los registros indicados. Considero importante mantener una actitud de curiosidad y disposición para practicar, ya que los temas de lenguaje ensamblador requieren precisión y constancia.
+
+## Análisis de errores
+
+Al analizar los procedimientos, identifiqué posibles confusiones que pueden presentarse al trabajar con estos modos de direccionamiento. La primera consiste en **confundir el contenido de un registro con la dirección de memoria a la que apunta**. Por ejemplo, `BX = 0300H` no significa que la dirección física deba ser siempre `0300H`, porque también se necesita considerar el segmento.
+
+Otra dificultad es olvidar alguno de los términos de la dirección efectiva. En `ARRAY[BX+SI]` deben considerarse el desplazamiento de `ARRAY`, el valor de `BX` y el de `SI`; omitir uno produciría una dirección diferente. Asimismo, en `[EBX+2*ESI]` se debe realizar primero la multiplicación del índice por el factor de escala. Finalmente, revisé que no se confundieran las posiciones del origen y el destino en las instrucciones `MOV`.
+
+Los resultados de las cinco operaciones de la hoja son consistentes con los valores utilizados. Por eso, este análisis se centra en los riesgos de interpretación y cálculo que aprendí a prevenir, sin afirmar que cometí errores que no están registrados en mi evidencia.
+
+## Propuesta de mejora
+
+Para mejorar mi comprensión, propongo elaborar una tabla con la estructura general de cada modo de direccionamiento, la fórmula para calcular su dirección efectiva y un ejemplo de instrucción. Esto me permitiría reconocer rápidamente si debo utilizar un registro, sumar dos registros, agregar una constante o aplicar un factor de escala.
+
+También sería útil representar gráficamente los registros y las direcciones de memoria, señalando con flechas cómo se forma la dirección efectiva y cómo se obtiene la dirección física. Otra mejora consistiría en ejecutar pequeños programas en un simulador o depurador de ensamblador para observar cómo se modifica la memoria después de una instrucción `MOV`. De esta manera podría comprobar que los cálculos manuales corresponden con el comportamiento de una máquina.
+
+## Integración de teoría y práctica
+
+La teoría de los modos de direccionamiento me explicó cómo una instrucción determina la ubicación de sus operandos, mientras que los ejercicios me permitieron comprobarlo mediante cálculos concretos. Por ejemplo, la expresión `[BX+SI]` dejó de ser solamente una combinación de símbolos cuando calculé que, con los valores proporcionados y la base del segmento, se accedía a `10500H`.
+
+De forma similar, el ejemplo `[EBX+2*ESI]` me mostró cómo el concepto de índice escalado se traduce en una operación que permite localizar una posición dentro de una estructura de datos. Así pude relacionar la arquitectura de computadoras, los registros del procesador y las instrucciones de ensamblador con una aplicación práctica en el acceso a la memoria.
+
+## Reflexión personal
+
+Esta actividad me ayudó a avanzar de los cálculos de segmentación hacia la interpretación de instrucciones reales de lenguaje ensamblador. Me pareció interesante descubrir que una misma instrucción, como `MOV`, puede acceder a la memoria de maneras diferentes dependiendo de los registros y desplazamientos que aparezcan en ella.
+
+Al principio, expresiones como `[BX+SI]` o `[EBX+2*ESI]` pueden parecer complicadas; sin embargo, al separar sus componentes y resolverlos paso a paso comprendí mejor su funcionamiento. También reconocí la importancia de no memorizar solamente la fórmula, sino entender qué representa cada registro y por qué se usa. Me gustaría practicar más instrucciones de este tipo para ganar seguridad y relacionar los ejercicios escritos con la ejecución de programas.
+
+## Conclusión de la actividad
+
+En conclusión, esta tercera actividad me permitió conocer y aplicar cinco modos de direccionamiento de memoria utilizados en lenguaje ensamblador. Comprendí cómo se obtiene una dirección efectiva mediante registros, índices, desplazamientos y factores de escala, así como la manera en que esa dirección se combina con la base de un segmento en los ejemplos desarrollados.
+
+Además, reforcé mi capacidad para interpretar instrucciones `MOV`, identificar el origen y destino de los datos y resolver operaciones hexadecimales con varios componentes. Considero que esta actividad fue importante porque integró los conocimientos de segmentación y registros estudiados anteriormente con procedimientos concretos de acceso a memoria, fortaleciendo mi comprensión del funcionamiento interno de los microprocesadores.
+
+# Unidad 2 — Actividad 3: Modos de direccionamiento de memoria en lenguaje ensamblador
+
+## Objetivo de la actividad
+
+Identificar y comprender diferentes modos de direccionamiento empleados en el lenguaje ensamblador, reconociendo cómo se combinan los registros, los desplazamientos y las referencias a variables para calcular una dirección efectiva y localizar un dato en la memoria.
+
+## Descripción de la actividad
+
+En esta actividad desarrollé ejercicios sobre **cinco modos de direccionamiento de memoria**: indirecto por registro, base más índice, relativo a registro, base relativa más índice e índice escalado. Para cada caso analicé una instrucción `MOV`, identifiqué los registros y valores involucrados y realicé operaciones en hexadecimal con el propósito de obtener la dirección de memoria accedida.
+
+También distinguí entre el **origen** y el **destino** de una transferencia de datos. Esta parte fue importante porque las instrucciones no siempre leen de la memoria: algunas escriben en ella y otras toman el contenido de una posición para colocarlo en un registro. Los ejercicios me ayudaron a comprender cómo cambia el cálculo de una dirección de acuerdo con la expresión que aparece entre corchetes.
+
+## Evidencia de la actividad
+
+![Ejercicios de cinco modos de direccionamiento en ensamblador](imagenes/actividad3_modos_direccionamiento.jpeg)
+
+*Figura 1. Ejercicios realizados en clase sobre direccionamiento indirecto, base más índice, relativo, base relativa más índice e índice escalado.*
+
+## Desarrollo de la actividad
+
+### Concepto general
+
+Un **modo de direccionamiento** es la forma en que una instrucción indica dónde se encuentra su operando. Cuando el operando está en memoria, los registros y desplazamientos de la instrucción sirven para calcular la dirección efectiva. En los ejemplos de direccionamiento segmentado, la dirección física se obtiene agregando esa dirección efectiva a la base del segmento correspondiente.
+
+```text
+Dirección física = (Segmento × 10H) + Dirección efectiva
+```
+
+La notación `H` señala que los valores están escritos en hexadecimal y los corchetes `[ ]` indican una referencia a una posición de memoria.
+
+### 1. Direccionamiento indirecto por registro
+
+En este modo se utiliza el contenido de un registro para indicar la posición de memoria a la que debe accederse.
+
+**Instrucción trabajada:**
+
+```asm
+MOV [BX], CL
+```
+
+El registro `BX` contiene el desplazamiento de la posición de memoria de destino, mientras que `CL` proporciona el dato que se almacenará allí. Como `CL` es de 8 bits, se transfiere un byte.
+
+```text
+DS = 1000H
+BX = 0300H
+
+Base del segmento = 1000H × 10H = 10000H
+Dirección física   = 10000H + 0300H = 10300H
+```
+
+**Resultado:** la memoria de destino se encuentra en la dirección `10300H`.
+
+### 2. Direccionamiento base más índice
+
+Este modo suma el contenido de un registro base y un registro índice para obtener el desplazamiento efectivo.
+
+**Instrucción trabajada:**
+
+```asm
+MOV [BX+SI], BP
+```
+
+`BX` actúa como registro base, `SI` como registro índice y `BP` contiene el dato de 16 bits que se transfiere a la memoria.
+
+```text
+DS = 1000H
+BX = 0300H
+SI = 0200H
+
+Base del segmento = 1000H × 10H = 10000H
+Dirección efectiva = 0300H + 0200H = 0500H
+Dirección física   = 10000H + 0500H = 10500H
+```
+
+**Resultado:** la dirección de memoria accedida es `10500H`.
+
+### 3. Direccionamiento relativo a registro
+
+En esta modalidad se agrega un desplazamiento constante al valor contenido en un registro.
+
+**Instrucción trabajada:**
+
+```asm
+MOV CL, [BX+4]
+```
+
+El operando de memoria es el **origen**, y `CL` es el **destino** que recibe el dato de 8 bits.
+
+```text
+DS = 1000H
+BX = 0300H
+Desplazamiento adicional = 0004H
+
+Base del segmento = 1000H × 10H = 10000H
+Dirección efectiva = 0300H + 0004H = 0304H
+Dirección física   = 10000H + 0304H = 10304H
+```
+
+**Resultado:** se lee el dato ubicado en la dirección `10304H`.
+
+### 4. Direccionamiento de base relativa más índice
+
+Este modo combina una referencia a una variable o arreglo con los contenidos de un registro base y uno índice.
+
+**Instrucción trabajada:**
+
+```asm
+MOV ARRAY[BX+SI], DX
+```
+
+En este ejemplo, `ARRAY` aporta un desplazamiento asociado con la variable; `BX` y `SI` agregan posiciones adicionales, y `DX` proporciona el dato de 16 bits que se guardará en la ubicación calculada.
+
+```text
+DS = 1000H
+ARRAY = 7000H
+BX = 0300H
+SI = 0200H
+
+Base del segmento = 1000H × 10H = 10000H
+Dirección efectiva = 7000H + 0300H + 0200H = 7500H
+Dirección física   = 10000H + 7500H = 17500H
+```
+
+**Resultado:** el dato se escribe en la dirección `17500H`.
+
+### 5. Direccionamiento con índice escalado
+
+En este modo se multiplica un registro índice por un factor de escala antes de sumarlo al registro base. Es una forma útil de localizar elementos en arreglos cuyos datos tienen un tamaño fijo.
+
+**Instrucción trabajada:**
+
+```asm
+MOV [EBX+2*ESI], AX
+```
+
+El registro `EBX` funciona como base y `ESI` como índice, multiplicado por `2`. El registro `AX` contiene un dato de 16 bits que se almacenará en memoria. Este ejemplo utiliza registros y formas de direccionamiento de 32 bits disponibles en procesadores x86 compatibles.
+
+```text
+DS  = 1000H
+EBX = 00000300H
+ESI = 00000200H
+
+Base del segmento = 1000H × 10H = 10000H
+Índice escalado   = 2 × 0200H = 0400H
+Dirección efectiva = 0300H + 0400H = 0700H
+Dirección física   = 10000H + 0700H = 10700H
+```
+
+**Resultado:** la dirección de memoria accedida es `10700H`.
+
+### Resumen de resultados
+
+| Modo de direccionamiento | Instrucción | Dirección calculada |
+|---|---|:---:|
+| Indirecto por registro | `MOV [BX], CL` | `10300H` |
+| Base más índice | `MOV [BX+SI], BP` | `10500H` |
+| Relativo a registro | `MOV CL, [BX+4]` | `10304H` |
+| Base relativa más índice | `MOV ARRAY[BX+SI], DX` | `17500H` |
+| Índice escalado | `MOV [EBX+2*ESI], AX` | `10700H` |
+
+## ¿Qué aprendizaje obtuve?
+
+Aprendí que el microprocesador dispone de distintas maneras de localizar datos en la memoria y que cada modo de direccionamiento se adapta a una necesidad particular. Antes de resolver esta actividad conocía el procedimiento de sumar una base de segmento y un desplazamiento; ahora comprendí que **ese desplazamiento también puede calcularse a partir de uno o varios registros, una constante o un índice multiplicado por un factor de escala**.
+
+Otro aprendizaje importante fue identificar el sentido de una instrucción `MOV`: reconocer el origen y el destino me ayudó a entender si el dato se transfiere desde un registro hacia la memoria o desde la memoria hacia un registro. También comprendí por qué se utilizan los corchetes en ensamblador y cómo estos representan el acceso al contenido de una dirección de memoria.
+
+## Aprendizaje conceptual
+
+Comprendí que los modos de direccionamiento son reglas para determinar la ubicación de los operandos que utiliza una instrucción. Aprendí a diferenciar el direccionamiento indirecto por registro, donde una posición se señala mediante un solo registro, del direccionamiento base más índice, que combina dos registros para obtener una dirección efectiva.
+
+También aprendí que un direccionamiento relativo agrega un valor constante; que un direccionamiento con base relativa puede integrar la posición de una variable o arreglo; y que el índice escalado permite multiplicar un índice por un factor, lo cual resulta especialmente útil para manejar elementos de diferente tamaño. Además, reforcé el significado de registros como `BX`, `SI`, `BP`, `CL`, `DX`, `AX`, `EBX` y `ESI`, y su participación en las transferencias de datos.
+
+## Aprendizaje procedimental
+
+Desarrollé la habilidad de interpretar instrucciones `MOV` y convertir sus expresiones de direccionamiento en operaciones aritméticas. Para resolver los ejercicios seguí un procedimiento: identifiqué la instrucción y el registro de segmento, reconocí el origen y el destino, calculé la base del segmento, sumé los registros o constantes indicados y obtuve la dirección física resultante.
+
+Practiqué especialmente las sumas hexadecimales y el manejo de varios términos en una sola operación. En el ejercicio de índice escalado, primero multipliqué el valor de `ESI` por dos y después sumé el resultado al valor de `EBX`. Esta secuencia de pasos me ayudó a resolver expresiones más complejas sin perder de vista el significado de cada número.
+
+## Aprendizaje actitudinal
+
+Esta actividad fortaleció mi atención, paciencia y capacidad de análisis, porque los ejercicios eran similares en apariencia, pero requerían procedimientos ligeramente distintos. Aprendí a leer con cuidado cada instrucción antes de comenzar los cálculos y a evitar suponer que todos los modos de direccionamiento utilizan los mismos elementos.
+
+También reforcé mi responsabilidad al organizar las operaciones, identificar los resultados y revisar que el valor final correspondiera con los registros indicados. Considero importante mantener una actitud de curiosidad y disposición para practicar, ya que los temas de lenguaje ensamblador requieren precisión y constancia.
+
+## Análisis de errores
+
+Al analizar los procedimientos, identifiqué posibles confusiones que pueden presentarse al trabajar con estos modos de direccionamiento. La primera consiste en **confundir el contenido de un registro con la dirección de memoria a la que apunta**. Por ejemplo, `BX = 0300H` no significa que la dirección física deba ser siempre `0300H`, porque también se necesita considerar el segmento.
+
+Otra dificultad es olvidar alguno de los términos de la dirección efectiva. En `ARRAY[BX+SI]` deben considerarse el desplazamiento de `ARRAY`, el valor de `BX` y el de `SI`; omitir uno produciría una dirección diferente. Asimismo, en `[EBX+2*ESI]` se debe realizar primero la multiplicación del índice por el factor de escala. Finalmente, revisé que no se confundieran las posiciones del origen y el destino en las instrucciones `MOV`.
+
+Los resultados de las cinco operaciones de la hoja son consistentes con los valores utilizados. Por eso, este análisis se centra en los riesgos de interpretación y cálculo que aprendí a prevenir, sin afirmar que cometí errores que no están registrados en mi evidencia.
+
+## Propuesta de mejora
+
+Para mejorar mi comprensión, propongo elaborar una tabla con la estructura general de cada modo de direccionamiento, la fórmula para calcular su dirección efectiva y un ejemplo de instrucción. Esto me permitiría reconocer rápidamente si debo utilizar un registro, sumar dos registros, agregar una constante o aplicar un factor de escala.
+
+También sería útil representar gráficamente los registros y las direcciones de memoria, señalando con flechas cómo se forma la dirección efectiva y cómo se obtiene la dirección física. Otra mejora consistiría en ejecutar pequeños programas en un simulador o depurador de ensamblador para observar cómo se modifica la memoria después de una instrucción `MOV`. De esta manera podría comprobar que los cálculos manuales corresponden con el comportamiento de una máquina.
+
+## Integración de teoría y práctica
+
+La teoría de los modos de direccionamiento me explicó cómo una instrucción determina la ubicación de sus operandos, mientras que los ejercicios me permitieron comprobarlo mediante cálculos concretos. Por ejemplo, la expresión `[BX+SI]` dejó de ser solamente una combinación de símbolos cuando calculé que, con los valores proporcionados y la base del segmento, se accedía a `10500H`.
+
+De forma similar, el ejemplo `[EBX+2*ESI]` me mostró cómo el concepto de índice escalado se traduce en una operación que permite localizar una posición dentro de una estructura de datos. Así pude relacionar la arquitectura de computadoras, los registros del procesador y las instrucciones de ensamblador con una aplicación práctica en el acceso a la memoria.
+
+## Reflexión personal
+
+Esta actividad me ayudó a avanzar de los cálculos de segmentación hacia la interpretación de instrucciones reales de lenguaje ensamblador. Me pareció interesante descubrir que una misma instrucción, como `MOV`, puede acceder a la memoria de maneras diferentes dependiendo de los registros y desplazamientos que aparezcan en ella.
+
+Al principio, expresiones como `[BX+SI]` o `[EBX+2*ESI]` pueden parecer complicadas; sin embargo, al separar sus componentes y resolverlos paso a paso comprendí mejor su funcionamiento. También reconocí la importancia de no memorizar solamente la fórmula, sino entender qué representa cada registro y por qué se usa. Me gustaría practicar más instrucciones de este tipo para ganar seguridad y relacionar los ejercicios escritos con la ejecución de programas.
+
+## Conclusión de la actividad
+
+En conclusión, esta tercera actividad me permitió conocer y aplicar cinco modos de direccionamiento de memoria utilizados en lenguaje ensamblador. Comprendí cómo se obtiene una dirección efectiva mediante registros, índices, desplazamientos y factores de escala, así como la manera en que esa dirección se combina con la base de un segmento en los ejemplos desarrollados.
+
+Además, reforcé mi capacidad para interpretar instrucciones `MOV`, identificar el origen y destino de los datos y resolver operaciones hexadecimales con varios componentes. Considero que esta actividad fue importante porque integró los conocimientos de segmentación y registros estudiados anteriormente con procedimientos concretos de acceso a memoria, fortaleciendo mi comprensión del funcionamiento interno de los microprocesadores.
 
 
