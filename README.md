@@ -903,7 +903,7 @@ Los ejercicios me permitieron practicar las operaciones hexadecimales y comprend
 
 ## Evidencia de la actividad
 
-![Ejercicios en clase sobre direcciones de memoria segmentada](imagenes/actividad1-ejercicios-clase.png)
+![Ejercicios en clase sobre direcciones de memoria segmentada](actv1.jpeg)
 
 *Figura 1. Operaciones realizadas en clase para calcular direcciones iniciales, finales y una dirección física en hexadecimal.*
 
