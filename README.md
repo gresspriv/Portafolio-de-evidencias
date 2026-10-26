@@ -25,7 +25,6 @@
 11. [Actividad 5: Cuestionario y problemas de lenguaje ensamblador](#actividad-5-cuestionario-y-problemas-de-lenguaje-ensamblador)
 
 
-
 ---
 
 # INTRODUCCIÓN
@@ -1358,4 +1357,5 @@ También me pareció útil que las preguntas estuvieran escritas en inglés, ya 
 En conclusión, la Actividad 5 me permitió integrar mis conocimientos sobre los registros del microprocesador, la instrucción `MOV`, los datos inmediatos, las directivas del ensamblador y el direccionamiento de memoria. A través de las preguntas teóricas y los ejercicios prácticos aprendí a reconocer instrucciones válidas, distinguir tamaños de operandos y calcular direcciones físicas utilizando segmentos, registros, índices y desplazamientos.
 
 Además, reforcé mi capacidad para interpretar enunciados técnicos, organizar procedimientos y analizar posibles errores. Esta actividad representó una oportunidad para consolidar los conocimientos de la Unidad 2 y prepararme para el desarrollo de programas en lenguaje ensamblador y temas posteriores de arquitectura de computadoras.
+
 
